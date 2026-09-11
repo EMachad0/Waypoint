@@ -2,126 +2,54 @@
 
 ## When to use
 
-Read this before writing or changing any test in the workspace, and before designing code that
-needs to be testable. It describes how tests are written in this repo today and how to replicate
-the patterns in new code.
+Read this before writing or changing any test, and before designing code that has to be testable.
 
-## Two layers, kept physically separate
+The workspace has no crates yet, so this doc holds the conventions only. Add the worked examples
+(fakes, feature flags, harness setup) once there is real code to show.
 
-### Unit tests — colocated
+## Two layers, kept in separate places
 
-Live in the module they cover, inside a `#[cfg(test)] mod tests` block. They may poke the module's
-internal seams directly (`pub(crate)` items, private helpers). Anything only reachable through a
-crate-internal item is necessarily tested here.
+Unit tests live in the module they cover, inside a `#[cfg(test)] mod tests` block. They may reach
+into the module's internals directly (`pub(crate)` items, private helpers). Anything only reachable
+through a crate-internal item is tested here.
 
-```rust
-// crates/stdb_bevy/src/utils/backoff.rs
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn fixed_backoff_is_constant() {
-        let backoff = Backoff::Fixed(Duration::from_secs(2));
-        assert_eq!(backoff.delay(0), Duration::from_secs(2));
-        assert_eq!(backoff.delay(5), Duration::from_secs(2));
-    }
-}
-```
-
-### End-to-end tests — `tests/`, public API only
-
-Live in `crates/<crate>/tests/` and drive the crate through its **public API only** — no crate
-internals. For the Bridge this means a public fake driver, public messages, and public resources;
-it proves a consumer (the Game) can actually use the crate, catching "the internals work but the
-crate isn't usable" regressions.
-
-```rust
-// crates/stdb_bevy/tests/connection_lifecycle.rs
-use stdb_bevy::test_support::{DeferredDriver, test_app};
-use stdb_bevy::{StdbConnect, StdbStatus};
-
-#[test]
-fn connect_in_flight_is_connecting() {
-    let mut app = test_app(DeferredDriver::default());
-
-    app.world_mut().trigger(StdbConnect);
-    app.update();
-
-    assert_eq!(
-        *app.world().resource::<StdbStatus>(),
-        StdbStatus::Connecting,
-        "while a build is in flight the status is Connecting, not Disconnected",
-    );
-}
-```
-
-## Reusable fakes behind a `test-support` feature
-
-Shared test doubles (`FakeConn`, `FakeConnectionDriver`, `DeferredDriver`, `FakeTable`, `test_app`)
-live in a `test_support` module exposed behind an off-by-default `test-support` feature, so they are
-available to both the crate's own tests and downstream crates (the Game reuses them), but never ship
-in a normal build:
-
-```rust
-// in the crate root (e.g. lib.rs)
-#[cfg(any(test, feature = "test-support"))]
-pub mod test_support;
-```
-
-`cargo test` turns the feature on for the integration-test build via a **self-dev-dependency** —
-the crate depends on itself with the feature enabled, the standard way to make a feature available
-to a crate's own `tests/`:
-
-```toml
-[dev-dependencies]
-stdb_bevy = { path = ".", features = ["test-support"] }
-```
-
-When a fake needs to construct a non-public type (e.g. a connection error), it exposes a small
-intent-revealing method (`DeferredDriver::deliver_error`) rather than leaking the type, so the
-e2e tests stay public-API-only.
+End-to-end tests live in `crates/<crate>/tests/` and drive the crate through its public API, never
+crate internals. They prove a consumer can use the crate, which catches the case where the
+internals work but the crate is unusable from outside.
 
 ## Conventions
 
-- **Start every colocated `mod tests` with `use super::*;`** so the module's items are in scope
-  without repeating imports in each test.
-- **Name tests after the behavior**, in `snake_case`, as a sentence:
-  `connecting_resolves_to_connected_when_the_build_lands`, not `test_connect`. The name reads like a
-  spec line.
-- **One behavior per test.** Don't cram multiple behaviors into one test; split them so a failure
-  points at exactly one thing.
-- **Cover happy and unhappy paths.** For each piece of behavior, test the success path *and* the
-  failure/edge paths (errors, caps, overflow, empty input). Existing tests pair, e.g.,
-  `connecting_resolves_to_connected_when_the_build_lands` with
-  `connecting_resolves_to_disconnected_on_error_and_rearms_reconnect`.
-- **Assertion messages carry the *why*.** When an assertion's intent isn't obvious from the values,
-  add a message explaining the expected behavior — it documents intent and makes failures
+- Start every colocated `mod tests` with `use super::*;` so the module's items are in scope without
+  repeating imports in each test.
+- Name tests after the behavior, in `snake_case`, as a sentence. The name reads like a spec line:
+  `connecting_resolves_to_connected_when_the_build_lands`, not `test_connect`.
+- One behavior per test. Splitting them means a failure points at exactly one thing.
+- Cover happy and unhappy paths. For each piece of behavior, test the success path and the failure
+  and edge paths: errors, caps, overflow, empty input. Tests pair up, one per path.
+- Assertion messages carry the why. When the values alone do not show an assertion's intent, add a
+  message that states the expected behavior. It documents intent and makes the failure
   self-explaining:
 
   ```rust
   assert_eq!(
       probe.connects(),
       1,
-      "Connecting must suppress auto-reconnect — no second build may be kicked in flight",
+      "Connecting must suppress auto-reconnect, no second build may be kicked in flight",
   );
   ```
 
-- **Test behavior, not implementation.** Assert on observable results through the interface, not on
+- Test behavior, not implementation. Assert on observable results through the interface, not on
   internal call counts or private state. A test should survive an internal refactor that preserves
   behavior.
-- **Design for testability.** Accept dependencies instead of constructing them internally (so a fake
-  can be injected), and prefer returning results over hidden side effects.
+- Design for testability. Accept dependencies instead of constructing them internally, so a fake
+  can be injected, and prefer returning results over hidden side effects.
 
 ## Running tests
 
-- `just check::test` — runs the workspace test suite.
-- `cargo test --workspace --exclude stdb_module` — the underlying command. The wasm-only
-  `stdb_module` is **excluded** from host cargo commands (it only compiles for
-  `wasm32-unknown-unknown`); confirm it builds with `just check::module`.
-- `just check::all` — fmt + clippy + test + the Module wasm build.
+- `just check::test` runs the workspace test suite.
+- `cargo test --workspace` is the underlying command.
+- `just check::all` runs fmt, clippy, and test.
 
 ## References
 
-- CI runs the same gates — see `docs/cicd.md`.
-- Domain vocabulary for test and interface names lives in the project glossary.
+- Domain vocabulary for test and interface names lives in `docs/CONTEXT.md`.

@@ -1,6 +1,4 @@
 mod wk ".just/wk.just"
-mod dev ".just/dev.just"
-mod stdb ".just/stdb.just"
 mod check ".just/check.just"
 
 set dotenv-load := true
