@@ -20,6 +20,7 @@ github-cli = "latest"
 "github:max-sixty/worktrunk" = { version = "0.61.0", exe = "wt" }
 
 [env]
+RUST_LOG = "warn,wayfinder_solver=trace"
 
 [hooks]
 enter = [
