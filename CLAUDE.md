@@ -31,16 +31,31 @@ encode conventions you are expected to follow, not summarize.
 
 ## Comment Rules
 
-When writing new comments:
+## Code comments
 
-- Sound **professional** and follow the existing codebase's comment style.
-- Keep them **concise**.
-- Comment **what is not easily inferred from the code** — the *why*, a non-obvious constraint, a
-  subtle edge case — not what the code already says plainly.
-- **Never reference ADRs or `docs/CONTEXT.md`.** State the *why* inline instead. Those docs get
-  moved, renumbered, superseded, and deleted; a comment that points at one then has to be chased
-  and updated, and a comment that leans on one has stopped explaining itself. (This applies to
-  *code comments* only: docs may reference each other freely.)
+Default is no comment. Docstrings come before inline comments. If the explanation is
+durable, it belongs in a docstring, not above a line.
+
+When a comment is warranted:
+
+- Professional tone. No chatty asides ("and friends", "gotcha"), no editorializing, no
+  narration of the change being made.
+- Follow the pattern already in the file and the module. If sibling functions carry no
+  docstring, the new one gets none either.
+- Concise. When rewriting an existing comment, make it shorter, not longer.
+- Only information that cannot be inferred by reading the code. A comment restating what
+  the next line does is noise.
+- Do not couple a comment to code that is not directly below it. No comment that describes
+  a caller, a sibling module, or a future edit.
+- The comment must stand on its own and cost nothing to keep accurate. A comment that goes
+  stale the next time nearby code moves is a bad comment; drop it instead.
+- Never reference untracked files: ADRs, CONTEXT.md, worktree-parent specs, wayfinder maps,
+  handoff docs. A handoff or plan doc claiming an exception is not license.
+- No em dashes, en dashes, or arrows.
+
+These rules cover all new text, not just Python inline comments: docstrings, interface
+`description=` strings, json5 `//` comments, test comments. Text moved from another file
+counts as new text and gets restyled during the move.
 
 ## Always Check Your Work
 
@@ -57,6 +72,35 @@ When writing new comments:
 - **Rebase** → always `git fetch` first, then rebase.
 - **Open a PR** → `git fetch` → rebase → stage → commit → push → create the PR, in that order.
 
-## Agent Rules
+## Plan before implementing, then implement with TDD
 
-- **Never use the `AskUserQuestion` tool.** If you need clarification, state your assumption and proceed. If you need to present options, list them in plain text output instead.
+Implementation is the last step, never the first. Before writing code, the shape of the
+work and every open decision must be settled with me.
+
+Planning, sized to the work:
+
+- A design or plan I want stress-tested: `grill-with-docs` (checks it against the domain
+  model and the docs) or `grill-me` (plain interrogation of the decision tree).
+- Work too big for one session, destination still foggy: `/wayfinder`. I have to invoke it;
+  it is not model-invocable. Propose it, do not try to call it.
+
+Never rush into implementation carrying uncertainty. If a choice has more than one
+defensible answer and picking wrong means rework, stop and ask me. Do not pick silently and
+report the assumption afterwards. Unknowns that only affect one call site are yours to
+decide; anything shaping an interface, a schema, a stored format, or a policy is mine.
+
+Once the plan is settled, implement with the `tdd` skill: red, green, refactor. That is the
+one pass referenced above. No permission checkpoints inside it.
+
+## No AskUserQuestion tool
+
+Never call `AskUserQuestion`. The option picker constrains my answer to the choices you
+guessed at, and my answer is usually neither of them, so it costs a turn instead of saving
+one. It also cuts the conversation down to a menu.
+
+Ask in prose at the end of the message: the question, the tradeoff, and your recommendation.
+I answer in free text. This holds in grill and interview flows too, where the temptation is
+strongest.
+
+Only exception: I explicitly ask for the picker in that message.
+
