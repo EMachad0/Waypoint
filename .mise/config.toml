@@ -1,0 +1,31 @@
+min_version = "2025.1.0"
+
+[settings]
+experimental = true
+
+[tools]
+# Rust is pinned via rust-toolchain.toml (rustup), not mise, so bare `cargo`, `spacetime build`,
+# and CI all agree on one toolchain and the wasm target is auto-installed.
+just = "latest"
+github-cli = "latest"
+# trunk-rs (wasm bundler) — NOT mise's default `trunk` (that resolves to the Trunk.io linter)
+"github:trunk-rs/trunk" = "latest"
+# SpacetimeDB CLI — kept at the same major/minor as the server image, SDK, and module crate.
+# The release tarball ships two binaries (`spacetimedb-cli` = the `spacetime` command, and
+# `spacetimedb-standalone`); the github backend keeps both side by side, which the single-binary
+# ubi backend did not — `spacetime start` needs the standalone sibling. The command is therefore
+# exposed under its real name, `spacetimedb-cli`.
+"github:clockworklabs/SpacetimeDB" = { version = "2.7.0", exe = "spacetimedb-cli" }
+# worktrunk: the git worktree manager that the `wk` just module wraps. The release archive's
+# binary is named `wt`, not the repo name `worktrunk`, so the github backend needs `exe` to put
+# `wt` on PATH. Pinned to an explicit tag rather than "latest": worktrunk's binary self-reports a
+# version (0.34.x) decoupled from its release tags, and mise derives the locked version from the
+# binary, so "latest" silently resolves to a stale release. Bump this tag to upgrade.
+"github:max-sixty/worktrunk" = { version = "0.61.0", exe = "wt" }
+
+[env]
+
+[hooks]
+enter = [
+    "mise install --locked --quiet",
+]
