@@ -23,3 +23,7 @@ Thumbs.db
 # mise
 .mise/config.local.toml
 
+# scratch
+*.ignore.*
+*.ignore/
+
