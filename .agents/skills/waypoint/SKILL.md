@@ -24,7 +24,7 @@ The map is a single issue on this repo's issue tracker, labelled `waypoint:map`,
 
 The map is an **index**, not a store. It lists what each closed ticket resolved and points at the ticket that holds the detail; that detail lives in exactly one place, its ticket, so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`. Consult the tracker doc's "Waypoint operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker.
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** This repo's tracker is `docs/agents/issue-tracker.md`. Its "Waypoint operations" section says how each of those is expressed here.
 
 ### The map body
 
