@@ -4,11 +4,21 @@ TODO
 
 ## Tech stack
 
-TODO
+Rust, edition 2024, toolchain pinned in `rust-toolchain.toml`. The terminal UI is built on
+ratatui, declared once in `[workspace.dependencies]` at the root so no member can drift onto a
+second version. crossterm is reached through `ratatui::crossterm` rather than depended on
+directly, so the backend and the event types always come from the same crossterm.
 
 ### Workspace (`crates/`)
 
-TODO. `crates/` is empty; the root package is the only one so far.
+The root `Cargo.toml` is both the `wayfinder_solver` binary package and the workspace root, with
+libraries under `crates/`. `docs/adr/0001-workspace-shape.md` records why.
+
+- `crates/map_tui`: the terminal application. `App` carries the state, the key handling and the
+  drawing, with no terminal in it; `run` owns the terminal lifecycle. The crate renders, and never
+  fetches, parses or writes a Map.
+
+`src/main.rs` is the binary, and does nothing but call `map_tui::run()`.
 
 ## Common commands
 
