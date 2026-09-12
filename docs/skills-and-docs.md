@@ -27,21 +27,18 @@ Static best-practice documents. Agents read them automatically, triggered by a C
 - Content: conventions, patterns, rules, and anti-patterns to follow during implementation
 - Examples: `docs/testing.md`, this doc
 
-### Skills (`~/.agents/skills/`)
+### Skills (`.agents/skills/` and `~/.agents/skills/`)
 
 Interactive workflows invoked as `/skill-name`. A skill performs work: it runs commands, asks
 questions, and writes files.
 
-- Location: `~/.agents/skills/<skill-name>/SKILL.md`, installed once per machine and shared by
-  every repo. Claude Code reads them through the `~/.claude/skills` symlink
+- Location: `~/.agents/skills/<skill-name>/SKILL.md` when the workflow is shared by every repo on
+  the machine, `.agents/skills/<skill-name>/SKILL.md` when it belongs to this one. Claude Code
+  reads each through a `skills` symlink, `~/.claude/skills` and `.claude/skills`
 - Loaded when: the user invokes `/skill-name`, or the agent matches the description
 - Content: instructions for an interactive workflow, not static reference
 - Examples: `/grill-with-docs` interviews the user about a plan and updates the glossary and ADRs
   inline, `/to-spec` writes a spec, `/to-tickets` splits work into tickets
-
-This repo ships no skills of its own. The workflows it relies on are versioned and installed
-outside it, and they read their per-repo configuration from `docs/agents/`. Docs should not
-duplicate or override skill content.
 
 ### Glossary (`docs/CONTEXT.md`)
 
@@ -96,7 +93,8 @@ to call something is the glossary. Why a settled choice was made is an ADR.
 
 ## Creating a new skill
 
-1. Create `~/.agents/skills/<skill-name>/SKILL.md`
+1. Create `SKILL.md` under `.agents/skills/<skill-name>/` for a workflow this repo owns, or under
+   `~/.agents/skills/<skill-name>/` for one every repo should get
 2. Add frontmatter:
 
 ```yaml

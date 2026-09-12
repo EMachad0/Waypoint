@@ -53,7 +53,7 @@ When a comment is warranted:
   caller, a sibling module, or a future edit.
 - The comment must stand on its own and cost nothing to keep accurate. A comment that goes stale
   the next time nearby code moves is a bad comment. Drop it instead.
-- Never reference untracked files: ADRs, CONTEXT.md, worktree-parent specs, wayfinder maps,
+- Never reference untracked files: ADRs, CONTEXT.md, worktree-parent specs, waypoint maps,
   handoff docs. A handoff or plan doc claiming an exception is not license.
 - No em dashes, en dashes, or arrows.
 
@@ -83,8 +83,8 @@ Planning, sized to the work:
 
 - A design or plan I want stress-tested: `/grill-with-docs`. It walks the decision tree and checks
   the plan against the glossary and the ADRs tracked in this repo.
-- Work too big for one session, destination still foggy: `/wayfinder`. I have to invoke it.
-  Propose it, do not try to call it.
+- Work too big for one session, destination still foggy: `/waypoint`. I have to invoke it. Propose
+  it, do not try to call it.
 
 Never rush into implementation carrying uncertainty. If a choice has more than one defensible
 answer and picking wrong means rework, stop and ask me. Do not pick silently and report the
@@ -107,12 +107,25 @@ Only exception: I explicitly ask for the picker in that message.
 
 ## Agent skills
 
-The skills installed outside this repo read their per-repo configuration from `docs/agents/`.
+Most skills are installed outside this repo and read their per-repo configuration from
+`docs/agents/`. One ships here instead.
+
+### Waypoint
+
+This repo's own fork of `wayfinder`, carrying an effort from a rough idea to landed work. It lives
+in `.agents/skills/waypoint/`, and `.claude/skills` symlinks that directory so Claude Code sees it
+too. Prefer it over the installed `wayfinder`, which stops at a clear route.
+
+### Landing
+
+What counts as shipped here, which is what a Waypoint map takes its destination from. See
+`docs/agents/landing.md`.
 
 ### Issue tracker
 
 Issues live as tracked markdown under `docs/issues/`, closed by deleting the file in the pull
-request that implements them. See `docs/agents/issue-tracker.md`.
+request that implements them. A ticket belonging to a map is the exception and is never deleted.
+See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
