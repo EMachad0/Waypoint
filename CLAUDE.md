@@ -113,13 +113,13 @@ Most skills are installed outside this repo and read their per-repo configuratio
 ### Waypoint
 
 This repo's own fork of `wayfinder`, carrying an effort from a rough idea to landed work. It lives
-in `.agents/skills/waypoint/`, and `.claude/skills` symlinks that directory so Claude Code sees it
-too. Prefer it over the installed `wayfinder`, which stops at a clear route.
+in `.agents/skills/waypoint/`, symlinked into `.claude/skills`. Prefer it over the installed
+`wayfinder`, which stops once the route is clear.
 
 ### Landing
 
-What counts as shipped here, which is what a Waypoint map takes its destination from, and where a
-surviving decision may earn an ADR. See `docs/agents/landing.md`.
+What counts as landed here. A Waypoint map takes its destination from it. See
+`docs/agents/landing.md`.
 
 ### Issue tracker
 

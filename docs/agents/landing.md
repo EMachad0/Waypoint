@@ -12,13 +12,11 @@ Revisit this file the first time `wayfinder_solver` is published anywhere.
 
 ## Landing tickets
 
-Merging the last implementation Ticket is not the end of a Map. The landing Ticket reads the Route
-so far and asks whether any decision the effort ended on clears the bar in `docs/adr/README.md`.
-Most efforts answer no, and no is the expected answer: promotion is optional, and a record nobody
-needed is noise in the one place that has to stay high signal.
+A Map does not end at the merge of its last implementation Ticket. The landing Ticket reads the
+Route so far and asks whether any decision the effort ended on clears the bar in
+`docs/adr/README.md`. Most efforts answer no.
 
-When a decision does clear the bar, it gets one record, however many Tickets fed it, written for a
-reader who never saw the effort, and each Ticket it drew from gains a `Recorded as:` line.
-Decisions superseded along the way stay where they are, unpromoted.
+When one does clear it, each Ticket the record draws from gains a `Recorded as:` line. Decisions
+superseded along the way stay where they are, unpromoted.
 
 The landing Ticket merges like any other, and that merge is where the Map reaches its destination.

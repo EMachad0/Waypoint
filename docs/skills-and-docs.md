@@ -13,10 +13,10 @@ Read this when you are:
 This project keeps agent-facing knowledge in four places. Docs and skills are mechanisms. The
 glossary and the decision records are single artifacts, each with one owner.
 
-`docs/issues/` is not one of them. It holds the efforts, open and closed: an open issue describes
+`docs/issues/` is not one of them. It holds the efforts, open and closed. An open issue describes
 what is not true yet, and a closed one records what was decided or built at the time. Nothing there
 is deleted and nothing there states current convention, so a decision durable enough to outlive its
-effort graduates to an ADR. `docs/agents/issue-tracker.md` governs it.
+effort is promoted to an ADR. `docs/agents/issue-tracker.md` governs it.
 
 ### Docs (`docs/`)
 
@@ -33,9 +33,9 @@ Static best-practice documents. Agents read them automatically, triggered by a C
 Interactive workflows invoked as `/skill-name`. A skill performs work: it runs commands, asks
 questions, and writes files.
 
-- Location: `~/.agents/skills/<skill-name>/SKILL.md` when the workflow is shared by every repo on
-  the machine, `.agents/skills/<skill-name>/SKILL.md` when it belongs to this one. Claude Code
-  reads each through a `skills` symlink, `~/.claude/skills` and `.claude/skills`
+- Location: `.agents/skills/<skill-name>/SKILL.md` for a workflow this repo owns,
+  `~/.agents/skills/<skill-name>/SKILL.md` for one installed per machine and shared by every repo.
+  Claude Code reads both through a `skills` symlink, `.claude/skills` and `~/.claude/skills`
 - Loaded when: the user invokes `/skill-name`, or the agent matches the description
 - Content: instructions for an interactive workflow, not static reference
 - Examples: `/grill-with-docs` interviews the user about a plan and updates the glossary and ADRs
@@ -65,9 +65,8 @@ behaves today.
   checking whether a question is already settled
 - Content: append-only history. Supersede an old ADR with a new one instead of rewriting it to
   match the present
-- Written by: `/grill-with-docs`, on the rare occasion it offers one, and by `/waypoint` at
-  landing, on the same rare occasion. Format lives in the `domain-modeling` skill, in
-  `ADR-FORMAT.md`
+- Written by: `/grill-with-docs` when a decision resolves, and by `/waypoint` at landing. Both are
+  rare. Format lives in the `domain-modeling` skill, in `ADR-FORMAT.md`
 - Docs may cite an ADR by path. Code comments may not, per the comment rules in CLAUDE.md
 
 ## When to use which
@@ -130,5 +129,7 @@ Keep code examples accurate against the current codebase. When writing or updati
   a one-line reminder.
 - Docs must not contradict skills. When a skill and a doc disagree, the doc wins on conventions and
   the skill wins on its own workflow.
+- Docs must not duplicate or override skill content. A doc that restates a workflow goes stale the
+  first time the skill changes.
 - Tooling conventions: `cargo` for the Rust workspace, `just` for task running, `mise` for
   installing tools. Never hand-edit generated code; regenerate it.

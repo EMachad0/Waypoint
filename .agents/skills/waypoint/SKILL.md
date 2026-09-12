@@ -1,18 +1,18 @@
 ---
 name: waypoint
-description: Carry an idea too big for one agent session from rough shape to landed work, as a shared map of tickets on your issue tracker, resolved one at a time through grilling, prototyping, implementation and review until the work is released.
+description: Carry an idea too big for one agent session from rough shape to landed work. The effort is a shared map of tickets on your issue tracker, resolved one at a time through grilling, prototyping, implementation, and review.
 disable-model-invocation: true
 ---
 
-A loose idea has arrived, too big for one agent session, and wrapped in fog: the way from here to the **destination** isn't visible yet. Waypoint is about finding that way and then walking it, not charging at the destination. This skill charts the way as a **shared map** on the repo's issue tracker, then works its **tickets** (a decision to settle, an artifact to make, a change to build) one at a time until the work is released.
+A loose idea has arrived, too big for one agent session, and wrapped in fog: the way from here to the **destination** isn't visible yet. Waypoint is about finding that way and then walking it, not charging at the destination. This skill charts the way as a **shared map** on the repo's issue tracker, then works its **tickets** (a decision to settle, an artifact to make, a change to build) one at a time until the work lands.
 
-The destination is **landed work**: the idea, built and shipped. What shipped means belongs to the repo, not to this skill. Read `docs/agents/landing.md` before charting and name the destination in its terms, whether that is a merged pull request, a tagged release, or a synced cluster. Naming it is the first act of charting, since it fixes the scope of every ticket after it.
+The destination is **landed work**: the idea, built and shipped. What shipped means belongs to the repo. Read `docs/agents/landing.md` before charting and name the destination in its terms, whether that is a merged pull request, a tagged release, or a synced cluster. Naming it is the first act of charting, since it fixes the scope of every ticket after it.
 
 ## Plan and do
 
-The map runs the whole arc, from the first grilling to the released change. Planning and building interleave: grill, implement, grill again with what the implementation taught, implement again. That loop is the normal shape of the work, not evidence the planning failed. Software stopped being a waterfall long before agents arrived, and a map that settles everything before building anything is a waterfall with tickets.
+The map runs the whole effort, from the first grilling to the landed change. Planning and building interleave: grill, implement, grill again with what the implementation taught, implement again. That loop is the normal shape of the work, not evidence the planning failed. A map that settles everything before building anything is a waterfall with tickets.
 
-So no decision is final until the work lands. Until then any of them can be amended or superseded, by what the build revealed, by a colleague's pushback, by a better idea arriving late (see [Superseding a decision](#superseding-a-decision)). Scope moves the same way: a map that grew a new half after its first pull request merged is a map doing its job.
+So no decision is final until the work lands. Until then any of them can be amended or superseded, by what the build revealed, by a colleague's pushback, by a better idea arriving late (see [Superseding a decision](#superseding-a-decision)). Scope moves the same way: a map can grow new tickets after its first pull request merges.
 
 ## Refer by name
 
@@ -68,7 +68,7 @@ Each ticket carries a `waypoint:<type>` label, one of `research`, `prototype`, `
 
 A session **claims** a ticket by assigning it to the dev driving the map, **first**, before any work, so concurrent sessions skip it. That assignee _is_ the claim: an open, unassigned ticket is unclaimed.
 
-Blocking uses the tracker's **native** dependency relationship: essential because it renders the frontier _visually_ in the tracker's own UI, so the human sees what's takeable without opening the map. Only a tracker that lacks native blocking falls back to a body convention. A ticket is **unblocked** when every ticket blocking it is closed; the **frontier** is the open, unblocked, unclaimed children, the edge of the known. Decisions and implementations sit on that frontier undifferentiated: both wait on a human, both cost review time, and neither outranks the other. What is takeable is whatever is unblocked.
+Blocking uses the tracker's **native** dependency relationship: essential because it renders the frontier _visually_ in the tracker's own UI, so the human sees what's takeable without opening the map. Only a tracker that lacks native blocking falls back to a body convention. A ticket is **unblocked** when every ticket blocking it is closed; the **frontier** is the open, unblocked, unclaimed children, the edge of the known. Decisions and implementations sit on that frontier undifferentiated: both wait on a human, and neither outranks the other. What is takeable is whatever is unblocked.
 
 The answer isn't part of the body; it's recorded on resolution (see [Work through the map](#work-through-the-map)). A **resource** created while resolving a ticket is linked from the issue, not pasted in; the tracker doc says where resources live.
 
@@ -79,10 +79,10 @@ Every ticket is either **HITL** (human in the loop, worked _with_ a human who sp
 - **Research** (AFK): Reading documentation, third-party APIs, or knowledge bases to surface a fact a decision waits on. Resolved by a subagent that calls the Skill tool with "research" and writes its findings as a resource. Use when knowledge outside the current working directory is required.
 - **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to (an outline, a rough take, a stub, or UI/logic code) by calling the Skill tool with "prototype". Links the prototype as a resource. Use when "how should it look" or "how should it behave" is the key question.
 - **Grilling** (HITL): Conversation. The default case. Always call the Skill tool twice, for "grilling" and "domain-modeling".
-- **Spec** (HITL): Gather what the grilling and the prototypes settled into one statement of what gets built, by calling the Skill tool with "to-spec". Links the spec as a resource. Optional, and rare: it earns its place when a change carries enough arbitrary decisions that every implementation ticket downstream would otherwise re-derive them.
-- **Task** (HITL or AFK): Manual work that must happen before a _decision_ can be made: nothing to decide, prototype, or research, but the discussion is blocked until it's done. Signing up for a service so its API can be judged, provisioning access, moving data so its shape can be seen. It earns its place by unblocking a decision rather than by delivering the destination, which is what separates it from an implementation ticket. The agent drives it alone where it can (AFK); otherwise it hands the human a precise checklist (HITL). Resolved when the work is done; the answer records what was done and any resulting facts (credentials location, new URLs, row counts) later tickets depend on.
+- **Spec** (HITL): Gather what the grilling and the prototypes settled into one statement of what gets built, by calling the Skill tool with "to-spec". Links the spec as a resource. Optional and rare. It earns its place when a change carries enough arbitrary decisions that every implementation ticket downstream would otherwise re-derive them.
+- **Task** (HITL or AFK): Manual work that must happen before a _decision_ can be made: nothing to decide, prototype, or research, but the discussion is blocked until it's done. Signing up for a service so its API can be judged, provisioning access, moving data so its shape can be seen. It earns its place by unblocking a decision, which is what separates it from an implementation ticket. The agent drives it alone where it can (AFK); otherwise it hands the human a precise checklist (HITL). Resolved when the work is done; the answer records what was done and any resulting facts (credentials location, new URLs, row counts) later tickets depend on.
 - **Implementation** (HITL): Build the change and get it reviewed, looping until the pull request merges. One ticket, one branch, one pull request; a change too big for one session is too big for one ticket, so split it. Call the Skill tool with "tdd" to build it and with "code-review" before handing it to the human. Review rounds are neither separate tickets nor separate states: the ticket carries the whole loop and resolves when the branch merges. Links the pull request from the ticket; the answer records whatever the build taught that other tickets now depend on.
-- **Landing** (HITL or AFK): Take merged work the last stretch to released, the way `docs/agents/landing.md` says: tagging, publishing, syncing, whatever this repo counts as shipped. It also weighs the decisions the effort ended on against the repo's bar for a decision record, and writes one for any that clears it, synthesised for a reader who never saw the map. Most efforts write none, and that's the expected outcome. A merged pull request is rarely a landed effort, so most maps end on one of these, and some want one partway through. Resolved once the destination is actually reached; the answer records what shipped and where to see it.
+- **Landing** (HITL or AFK): Take merged work the last stretch to landed, the way `docs/agents/landing.md` says: tagging, publishing, syncing, whatever this repo counts as shipped. It also weighs the decisions the effort ended on against the repo's bar for a decision record, and writes one for any that clears it. Most maps end on one of these, and some want one partway through. Resolved once the destination is reached; the answer records what shipped and where to see it.
 
 ## Fog of war
 
@@ -97,7 +97,7 @@ The map's **Not yet specified** section is where that dim view is written down: 
 
 **Not yet specified** excludes what's already settled (Route so far), what's already a live ticket, and what's out of scope (the section after next).
 
-Fog also re-forms behind you. Building a thing routinely turns up what no amount of planning could have known, and that discovery either graduates into new tickets or overturns a decision already closed. Both are ordinary. Record what the work taught, then make the map match it.
+Fog also re-forms behind you. Building a thing turns up what planning could not have known, and that discovery either graduates into new tickets or overturns a decision already closed. Both are ordinary. Record what the work taught, then make the map match it.
 
 ## Superseding a decision
 
@@ -107,7 +107,7 @@ A closed ticket's answer is what was true when it closed. When later work overtu
 - The superseded ticket keeps its own answer untouched, gaining only a pointer to the ticket that replaced it.
 - The superseded ticket's line leaves **Route so far**. The index carries live entries only, so the map still reads as the current state of the effort in a single pass, however many times it changed its mind.
 
-Dropping the line loses nothing: the superseded ticket is still there, still answered, still linked from its replacement, and the map's own history lives in the tracker.
+Dropping the line loses nothing: the superseded ticket is still answered and still linked from its replacement, and the map's own history lives in the tracker.
 
 A ticket is never deleted. Every pointer on the map has to stay resolvable, so a ticket that turns out wrong gets superseded and one that turns out to sit past the destination gets ruled out of scope. Both leave it in place, closed and readable.
 
@@ -121,7 +121,7 @@ Ruling something out of scope is a scoping act, not a step on the route. When a 
 
 ## Invocation
 
-Two modes. Either way, **never resolve more than one ticket per session**, with the exception of research tickets. That holds through a review round too: a session waiting on a reviewer waits, it doesn't go take another ticket.
+Two modes. Either way, **never resolve more than one ticket per session**, with the exception of research tickets. That holds through a review round too: a session waiting on a reviewer waits rather than taking another ticket.
 
 ### Chart the map
 

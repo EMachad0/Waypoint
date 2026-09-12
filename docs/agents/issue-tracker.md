@@ -3,8 +3,8 @@
 Issues for this repo live as tracked markdown files under `docs/issues/`. There is no external
 tracker. Everything is greppable from the worktree you are standing in.
 
-Nothing here is ever deleted. An issue closes by its `Status:` line, so `docs/issues/` is the
-record of what this repo decided and built, not a queue that empties.
+Nothing here is ever deleted. An issue closes by its `Status:` line, so `docs/issues/` keeps the
+record of what this repo decided and built.
 
 ## Layout
 
@@ -27,14 +27,14 @@ Tickets are numbered from `01` within their effort. Never collect them into one 
 ## Resources
 
 Whatever an effort needs to carry between sessions: writeups, images, samples, probe scripts,
-examples. The list stays flat until it hurts, and each file is named for what it is. The `_spec`,
-`_research`, and `_prototype` suffixes are a suggestion for markdown writeups, not a rule.
+examples. Keep the list flat until it is too long to scan, and name each file for what it is. The
+`_spec`, `_research`, and `_prototype` suffixes are optional conventions for markdown writeups.
 
 The ticket that produced a resource links it. That link runs one way, so a resource carries no
 back-pointer to its ticket.
 
 Resources are tracked git files, so a secret never goes in one. Committing a credential puts it in
-every clone permanently, and no later commit takes it back. Record where a credential lives, the
+every clone, and no later commit takes it back. Record where a credential lives, the
 secret manager path or the env var name, never its value. Anything that has to sit on disk
 unversioned goes in `resources/<name>.ignore.<ext>`. Fixtures carry synthetic values, never a copy
 of production data.
@@ -92,11 +92,11 @@ Used by `/waypoint`. The Map is `map.md`; its tickets are the numbered files und
 - **Resolve**: append the answer under an `## Answer` heading, set `Status: resolved`, then append
   a one-line gist and link to the Map's Route so far.
 - **Supersede**: file the new ticket, append a `Superseded by: NN` line to the old one, set its
-  `Status: superseded`, and delete its line from the Map's Route so far.
+  `Status: superseded`, and remove its line from the Map's Route so far.
 - **Rule out of scope**: set `Status: wontfix` and leave one line in the Map's Out of scope.
 - **Promote a decision**: optional, at landing. A decision clearing the bar in
-  `docs/adr/README.md` gets one record in `docs/adr/`, however many tickets fed it, and each ticket
-  it came from gains a `Recorded as: adr/NNNN-<slug>.md` line. Most efforts promote nothing.
+  `docs/adr/README.md` gets a record in `docs/adr/`, and each ticket it came from gains a
+  `Recorded as: adr/NNNN-<slug>.md` line.
 
 An ADR is authoritative for what is true now. A ticket's answer is dated history, so it is never
 edited to match a later ADR.
