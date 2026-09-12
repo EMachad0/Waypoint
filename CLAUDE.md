@@ -1,4 +1,4 @@
-# Wayfinder Solver
+# Waypoint
 
 TODO
 
@@ -11,8 +11,8 @@ directly, so the backend and the event types always come from the same crossterm
 
 ### Workspace (`crates/`)
 
-The root `Cargo.toml` is both the `wayfinder_solver` binary package and the workspace root, with
-libraries under `crates/`. `docs/adr/0001-workspace-shape.md` records why.
+The root `Cargo.toml` is both the `waypoint` binary package and the workspace root, with libraries
+under `crates/`. `docs/adr/0001-workspace-shape.md` records why.
 
 - `crates/map_tui`: the terminal application. `App` carries the state, the key handling and the
   drawing, with no terminal in it; `run` owns the terminal lifecycle. The crate renders, and never
