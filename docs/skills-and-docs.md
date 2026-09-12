@@ -13,6 +13,10 @@ Read this when you are:
 This project keeps agent-facing knowledge in four places. Docs and skills are mechanisms. The
 glossary and the decision records are single artifacts, each with one owner.
 
+`docs/issues/` is not one of them. It holds the work queue, not knowledge: entries describe what is
+not true yet, and each one is deleted when its work lands. Never read an issue as a statement of
+current convention. `docs/agents/issue-tracker.md` governs it.
+
 ### Docs (`docs/`)
 
 Static best-practice documents. Agents read them automatically, triggered by a CLAUDE.md directive
@@ -23,19 +27,21 @@ Static best-practice documents. Agents read them automatically, triggered by a C
 - Content: conventions, patterns, rules, and anti-patterns to follow during implementation
 - Examples: `docs/testing.md`, this doc
 
-### Skills (`.claude/skills/`)
+### Skills (`~/.agents/skills/`)
 
 Interactive workflows invoked as `/skill-name`. A skill performs work: it runs commands, asks
 questions, and writes files.
 
-- Location: `.claude/skills/<skill-name>/SKILL.md`
+- Location: `~/.agents/skills/<skill-name>/SKILL.md`, installed once per machine and shared by
+  every repo. Claude Code reads them through the `~/.claude/skills` symlink
 - Loaded when: the user invokes `/skill-name`, or the agent matches the description
 - Content: instructions for an interactive workflow, not static reference
-- Examples: `/grill` interviews the user about a plan and updates the glossary and ADRs inline,
-  `/to-prd` generates a PRD, `/to-issues` splits work into issues
+- Examples: `/grill-with-docs` interviews the user about a plan and updates the glossary and ADRs
+  inline, `/to-spec` writes a spec, `/to-tickets` splits work into tickets
 
-Skills may be versioned outside this repo and installed by tooling. Docs should not duplicate or
-override skill content.
+This repo ships no skills of its own. The workflows it relies on are versioned and installed
+outside it, and they read their per-repo configuration from `docs/agents/`. Docs should not
+duplicate or override skill content.
 
 ### Glossary (`docs/CONTEXT.md`)
 
@@ -47,8 +53,8 @@ CLAUDE.md marks it as the only always-read doc, because naming comes up in every
 - Loaded when: always, per the CLAUDE.md required reading
 - Content: terms, relationships, flagged ambiguities. No implementation details, no decisions, no
   rules
-- Written by: `/grill`, inline, as terms get resolved. Format lives in
-  `.claude/skills/grill/references/CONTEXT-FORMAT.md`
+- Written by: `/grill-with-docs`, inline, as terms get resolved. Format lives in the
+  `domain-modeling` skill, in `CONTEXT-FORMAT.md`
 
 ### Decision records (`docs/adr/`)
 
@@ -57,12 +63,12 @@ of a real trade-off. An ADR captures why a choice was made at a point in time, n
 behaves today.
 
 - Location: `docs/adr/NNNN-slug.md`, numbered in sequence
-- Loaded when: an agent needs the reasoning behind an existing decision, or `/grill` is checking
-  whether a question is already settled
+- Loaded when: an agent needs the reasoning behind an existing decision, or `/grill-with-docs` is
+  checking whether a question is already settled
 - Content: append-only history. Supersede an old ADR with a new one instead of rewriting it to
   match the present
-- Written by: `/grill`, on the rare occasion it offers one. Format lives in
-  `.claude/skills/grill/references/ADR-FORMAT.md`
+- Written by: `/grill-with-docs`, on the rare occasion it offers one. Format lives in the
+  `domain-modeling` skill, in `ADR-FORMAT.md`
 - Docs may cite an ADR by path. Code comments may not, per the comment rules in CLAUDE.md
 
 ## When to use which
@@ -90,7 +96,7 @@ to call something is the glossary. Why a settled choice was made is an ADR.
 
 ## Creating a new skill
 
-1. Create `.claude/skills/<skill-name>/SKILL.md`
+1. Create `~/.agents/skills/<skill-name>/SKILL.md`
 2. Add frontmatter:
 
 ```yaml
@@ -102,7 +108,7 @@ description: One-line description of what the skill does and when to invoke it.
 
 3. Write the skill instructions below the frontmatter
 4. Optional: add `allowed-tools` and `metadata` fields to the frontmatter
-5. Reference files can live in `.claude/skills/<skill-name>/references/`
+5. Reference files can live alongside `SKILL.md` in the skill's own directory
 
 ## Docs are live documents
 

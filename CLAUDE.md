@@ -59,7 +59,7 @@ verify the code matches your intent. The work is not done until it is green.
 ## Git rules
 
 - Never commit your own code before the developer has reviewed it. Present the work for review
-  first. The `dev-tdd` per-slice commit follows this rule: the developer's review is the gate.
+  first. A per-slice commit during TDD follows this rule too: the developer's review is the gate.
 - Run `just check::all` and confirm it passes before you commit.
 - Rebasing: `git fetch` first, then rebase.
 - Opening a PR: fetch, rebase, stage, commit, push, create the PR. In that order.
@@ -71,8 +71,8 @@ decision with me before writing code.
 
 Planning, sized to the work:
 
-- A design or plan I want stress-tested: `/grill`. It walks the decision tree and checks the plan
-  against the glossary and the ADRs tracked in this repo.
+- A design or plan I want stress-tested: `/grill-with-docs`. It walks the decision tree and checks
+  the plan against the glossary and the ADRs tracked in this repo.
 - Work too big for one session, destination still foggy: `/wayfinder`. I have to invoke it.
   Propose it, do not try to call it.
 
@@ -94,3 +94,23 @@ Ask in prose at the end of the message: the question, the tradeoff, your recomme
 in free text. This holds in grill and interview flows too, where the temptation is strongest.
 
 Only exception: I explicitly ask for the picker in that message.
+
+## Agent skills
+
+The skills installed outside this repo read their per-repo configuration from `docs/agents/`.
+
+### Issue tracker
+
+Issues live as tracked markdown under `docs/issues/`, closed by deleting the file in the pull
+request that implements them. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical triage roles, each string equal to its name, recorded as a `Status:` line. See
+`docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single context: `docs/CONTEXT.md` for the glossary, `docs/adr/` for decisions. The skills look for
+a glossary at the repo root by default. Never put one there, and never split the glossary per
+directory. See `docs/agents/domain.md`.
