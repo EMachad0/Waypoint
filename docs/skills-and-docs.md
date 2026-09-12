@@ -13,9 +13,10 @@ Read this when you are:
 This project keeps agent-facing knowledge in four places. Docs and skills are mechanisms. The
 glossary and the decision records are single artifacts, each with one owner.
 
-`docs/issues/` is not one of them. It holds the work queue, not knowledge: entries describe what is
-not true yet, and each one is deleted when its work lands. Never read an issue as a statement of
-current convention. `docs/agents/issue-tracker.md` governs it.
+`docs/issues/` is not one of them. It holds the efforts, open and closed: an open issue describes
+what is not true yet, and a closed one records what was decided or built at the time. Nothing there
+is deleted and nothing there states current convention, so a decision durable enough to outlive its
+effort graduates to an ADR. `docs/agents/issue-tracker.md` governs it.
 
 ### Docs (`docs/`)
 
@@ -64,8 +65,9 @@ behaves today.
   checking whether a question is already settled
 - Content: append-only history. Supersede an old ADR with a new one instead of rewriting it to
   match the present
-- Written by: `/grill-with-docs`, on the rare occasion it offers one. Format lives in the
-  `domain-modeling` skill, in `ADR-FORMAT.md`
+- Written by: `/grill-with-docs`, on the rare occasion it offers one, and by `/waypoint` at
+  landing, on the same rare occasion. Format lives in the `domain-modeling` skill, in
+  `ADR-FORMAT.md`
 - Docs may cite an ADR by path. Code comments may not, per the comment rules in CLAUDE.md
 
 ## When to use which

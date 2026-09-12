@@ -17,9 +17,18 @@ build.
 _Avoid_: task, card
 
 **Issue**:
-One unit of work filed under `docs/issues/`, deleted from the tree when the work lands, unless a
-**Map** points at it.
+One unit of work filed under `docs/issues/`, closed by its `Status:` line and kept in the tree
+afterwards.
 _Avoid_: story, work item
+
+**Effort**:
+One journey from a rough idea to landed work, charted by a **Map** and filed as one directory under
+`docs/issues/`.
+_Avoid_: project, initiative, epic
+
+**Resource**:
+An artifact a **Ticket** produced that later sessions need: a writeup, a sample, a script.
+_Avoid_: asset, attachment
 
 **Landing**:
 Reaching the destination: the point where an effort's work counts as shipped, which
@@ -28,6 +37,7 @@ _Avoid_: merging, shipping, done
 
 ## Relationships
 
+- An **Effort** has exactly one **Map**
 - A **Map** indexes many **Tickets**
 - A **Ticket** resolves exactly one question, whether that question is a decision or a change
 - A **Map** is finished when its destination is reached, which is **Landing**

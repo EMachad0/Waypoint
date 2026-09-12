@@ -118,14 +118,14 @@ too. Prefer it over the installed `wayfinder`, which stops at a clear route.
 
 ### Landing
 
-What counts as shipped here, which is what a Waypoint map takes its destination from. See
-`docs/agents/landing.md`.
+What counts as shipped here, which is what a Waypoint map takes its destination from, and where a
+surviving decision may earn an ADR. See `docs/agents/landing.md`.
 
 ### Issue tracker
 
-Issues live as tracked markdown under `docs/issues/`, closed by deleting the file in the pull
-request that implements them. A ticket belonging to a map is the exception and is never deleted.
-See `docs/agents/issue-tracker.md`.
+Issues live as tracked markdown under `docs/issues/`, one directory per effort, closed by a
+`Status:` line in the pull request that implements them. Nothing there is ever deleted. See
+`docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

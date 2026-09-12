@@ -12,8 +12,9 @@ The glossary sits at `docs/CONTEXT.md`, not at the repo root where the skills de
 `docs/skills-and-docs.md` fixes that location, and it wins. Never create a root `CONTEXT.md`, never
 add a second glossary elsewhere in the tree, and never split this one per directory.
 
-If `docs/adr/` holds no records yet, proceed silently. Do not flag the absence and do not propose
-writing one upfront. The `domain-modeling` skill writes ADRs when a decision actually gets resolved.
+Do not propose writing an ADR upfront. The `domain-modeling` skill writes one when a decision
+actually gets resolved, and a Waypoint effort may write one at landing. Neither is routine; see
+`docs/adr/README.md` for the bar.
 
 ## File structure
 
