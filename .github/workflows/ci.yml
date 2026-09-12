@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push to the same ref cancels the in-progress run, so superseded commits neither burn
+# runner minutes nor race on the shared rust-cache key.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      # Only just is installed. bacon and worktrunk are developer tools the gates never call, and
+      # bacon builds from source, which would dominate the job.
+      - uses: jdx/mise-action@v4
+        with:
+          install_args: just
+      - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: "true"
+      # Rust comes from the runner's rustup, which reads rust-toolchain.toml.
+      - run: just check::all
