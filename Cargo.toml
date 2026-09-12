@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+map_tui = { path = "crates/map_tui" }
+
+[workspace]
+members = ["crates/*"]
+
+[workspace.dependencies]
+ratatui = "0.30.2"

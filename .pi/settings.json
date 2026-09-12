@@ -1,5 +1,7 @@
 {
   "packages": [
     "npm:pi-subagents-lite"
-  ]
+  ],
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-5"
 }
