@@ -1,0 +1,5 @@
+interface:
+  display_name: "Waypoint"
+  short_description: "Carry a large effort from rough idea to landed work"
+policy:
+  allow_implicit_invocation: false

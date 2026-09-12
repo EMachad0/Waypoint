@@ -12,8 +12,9 @@ The glossary sits at `docs/CONTEXT.md`, not at the repo root where the skills de
 `docs/skills-and-docs.md` fixes that location, and it wins. Never create a root `CONTEXT.md`, never
 add a second glossary elsewhere in the tree, and never split this one per directory.
 
-If `docs/adr/` holds no records yet, proceed silently. Do not flag the absence and do not propose
-writing one upfront. The `domain-modeling` skill writes ADRs when a decision actually gets resolved.
+Do not propose writing an ADR upfront. The `domain-modeling` skill writes one when a decision gets
+resolved, and a Waypoint effort may write one at landing. Neither is routine; see
+`docs/adr/README.md` for the bar.
 
 ## File structure
 
@@ -40,5 +41,5 @@ not use, and should reconsider, or the gap is real and belongs to `domain-modeli
 
 When your output contradicts an existing ADR, say so instead of overriding it silently:
 
-> Contradicts ADR-0002 (single binary crate), but worth reopening because the TUI now needs a
-> separate render target.
+> Contradicts ADR-0001 (root manifest is both the binary package and the workspace root), but worth
+> reopening because the TUI now needs a separate render target.
