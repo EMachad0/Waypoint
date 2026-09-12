@@ -19,9 +19,17 @@ content.
 Decisions are fluid until work lands, so a map supersedes its own closed tickets as the build
 teaches it things, and `docs/issues/` became a permanent record.
 
-Upstream improvements no longer arrive for free. `c18450b` vendors the unedited skill, so
-`git diff c18450b -- .agents/skills/waypoint` is the fork's delta, and re-syncing means vendoring a
-newer upstream onto a scratch branch and reconciling by hand.
+Upstream improvements no longer arrive for free. The first commit of pull request 6 vendors the
+unedited skill. This repo squash merges, so that commit never lands on `main`, but GitHub keeps the
+branch reachable and the baseline with it:
+
+```sh
+git fetch origin refs/pull/6/head
+git diff "$(git rev-list --reverse FETCH_HEAD ^origin/main | head -1)" -- .agents/skills/waypoint
+```
+
+That diff is the fork's delta. Re-syncing means vendoring a newer upstream onto a scratch branch
+and reconciling by hand.
 
 The repo now ships a skill of its own, which `.claude/skills` symlinks so Claude Code and pi both
 load it.
