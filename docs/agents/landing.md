@@ -1,6 +1,6 @@
 # Landing
 
-Waypoint's destination is landed work. This file says what landed means in this repo.
+A Waypoint effort's destination is landed work. This file says what landed means in this repo.
 
 ## Landed means merged
 
@@ -8,7 +8,7 @@ Work is landed when its pull request is merged into `main` with the pipeline gre
 builds a binary that goes nowhere else: no tag, no release artifact, no deployment. The merge is
 the last event that changes what anyone gets from a clone.
 
-Revisit this file the first time `wayfinder_solver` is published anywhere.
+Revisit this file the first time `waypoint` is published anywhere.
 
 ## Landing tickets
 

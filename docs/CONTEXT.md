@@ -1,7 +1,7 @@
-# Wayfinder Solver
+# Waypoint
 
-The context of reading wayfinding work: the charts drawn while finding a way to a destination, and
-the decisions and changes made along it.
+The context of reading an effort's route: the charts drawn while finding a way to a destination,
+and the decisions and changes made along it.
 
 Format rules live in the `domain-modeling` skill, in `CONTEXT-FORMAT.md`.
 
