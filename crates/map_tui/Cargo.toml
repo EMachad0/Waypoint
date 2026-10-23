@@ -4,4 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+rataflow = "0.1.0"
 ratatui.workspace = true
+renderdag = "0.4.0"
+tui-markdown = "0.3.9"
+tui-popup = "0.7.6"
+tui-scrollview = "0.6.7"
+tui-tree-widget = "0.24.1"
+tui-widget-list = "0.15.3"

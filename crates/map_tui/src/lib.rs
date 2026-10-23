@@ -1,3 +1,5 @@
+pub mod prototype;
+
 use std::io;
 
 use ratatui::Frame;
